@@ -1,0 +1,5 @@
+# build artifacts / secrets — never commit
+*.bin
+*.odex
+*.vdex
+keys.txt

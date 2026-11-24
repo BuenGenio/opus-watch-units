@@ -1,0 +1,13 @@
+[Unit]
+Description=Bluetooth PAN autoconnect watchdog (internet from phone)
+After=bluetooth.service connman.service
+Wants=bluetooth.service connman.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/pan-autoconnect.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

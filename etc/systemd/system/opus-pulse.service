@@ -1,0 +1,19 @@
+[Unit]
+Description=Opus Pulse — low-power heart-rate + step monitoring, hourly upload to OpusOS
+After=sensorfwd.service bluetooth.service connman.service
+
+[Service]
+# Installed namespaced as /usr/bin/opus-pulsed to avoid colliding with any generic
+# "pulsed" (and clearly distinct from pulseaudio).
+ExecStart=/usr/bin/opus-pulsed
+Restart=on-failure
+RestartSec=10
+
+# Root, deliberately: needs CAP_WAKE_ALARM for timerfd_create(CLOCK_BOOTTIME_ALARM)
+# (the only clock that counts suspended time AND wakes the watch) and /sys/power/wake_lock
+# to hold the CPU across a heart-rate sample + upload so autosuspend can't drop it mid-sample.
+User=root
+AmbientCapabilities=CAP_WAKE_ALARM
+
+[Install]
+WantedBy=multi-user.target
